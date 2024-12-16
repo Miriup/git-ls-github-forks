@@ -49,8 +49,7 @@ $ git config --global --path alias.ls-github-forks "!sh /the/path/to/git-ls-gith
 Requirements
 ------------
 
-* [curl](http://curl.haxx.se/)
-* [jq](http://stedolan.github.io/jq/)
+* [github-cli](https://github.com/cli/cli)
 * [mktemp](http://www.mktemp.org/)
 
 
