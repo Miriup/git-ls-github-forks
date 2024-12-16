@@ -206,9 +206,9 @@ fi
 # so here we obtain the user's GitHub name and the repository name to
 # insert into $DATA_URL, which will be in the format shown above.
 # Finally, we also add the $SORT_ORDER parameter to the request.
-OWNER=$(git config --get github.user)
 REPOSITORY=$(basename --suffix=".git" "$REPOSITORY_URL")
-DATA_URL="$API_URL/repos/$OWNER/$REPOSITORY/forks?sort=$SORT_ORDER"
+OWNER=${REPOSITORY_URL#https://github.com/}
+OWNER=${OWNER%/${REPOSITORY}}
 
 # We save output from GitHub into a temporary file for debugging
 # purposes.  The file will be in the system's temporary directory and
