@@ -209,31 +209,27 @@ fi
 REPOSITORY=$(basename --suffix=".git" "$REPOSITORY_URL")
 OWNER=${REPOSITORY_URL#https://github.com/}
 OWNER=${OWNER%/${REPOSITORY}.*}
-PAGE=1
 
-while [ 0 ]
-do
-	DATA_URL="/repos/$OWNER/$REPOSITORY/forks?sort=$SORT_ORDER&per_page=100&page=${PAGE}"
-	let PAGE=${PAGE}+1
+DATA_URL="/repos/$OWNER/$REPOSITORY/forks?sort=$SORT_ORDER&per_page=100&page=${PAGE}"
+let PAGE=${PAGE}+1
 
-	# We save output from GitHub into a temporary file for debugging
-	# purposes.  The file will be in the system's temporary directory and
-	# will have the filename 'github.json.XXXXXX' where the final six
-	# characters are random.
-	TEMPORARY_OUTPUT_FILE=$(mktemp -t "github.json.XXXXXX")
+# We save output from GitHub into a temporary file for debugging
+# purposes.  The file will be in the system's temporary directory and
+# will have the filename 'github.json.XXXXXX' where the final six
+# characters are random.
+TEMPORARY_OUTPUT_FILE=$(mktemp -t "github.json.XXXXXX")
 
-	# Fetch the JSON data about forks from GitHub and extract all of the
-	# URLs for those forks, sending them to standard output.
-	gh api \
-	    --header "Accept: application/vnd.github+json" \
-	    --method GET "$DATA_URL" \
-	    -F sort=${SORT_ORDER} \
-	    -F per_page=100 \
-	    -F page=${PAGE} \
-	    -q ".[] | @text \"$FORMAT_URL $FORK_OWNER\"" \
-	    | tee "$TEMPORARY_OUTPUT_FILE" \
-	    || break
-done
+# Fetch the JSON data about forks from GitHub and extract all of the
+# URLs for those forks, sending them to standard output.
+gh api \
+    --header "Accept: application/vnd.github+json" \
+    --method GET "$DATA_URL" \
+    --paginate \
+    -F sort=${SORT_ORDER} \
+    -F per_page=100 \
+    -F page=${PAGE} \
+    -q ".[] | @text \"$FORMAT_URL $FORK_OWNER\"" \
+    | tee "$TEMPORARY_OUTPUT_FILE"
 
 # If we are running in verbose mode then we echo the name of
 # $TEMPORARY_OUTPUT_FILE to standard error.  The primary purpose of
