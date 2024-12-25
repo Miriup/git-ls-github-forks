@@ -208,7 +208,7 @@ fi
 # Finally, we also add the $SORT_ORDER parameter to the request.
 REPOSITORY=$(basename --suffix=".git" "$REPOSITORY_URL")
 OWNER=${REPOSITORY_URL#https://github.com/}
-OWNER=${OWNER%/${REPOSITORY}}
+OWNER=${OWNER%/${REPOSITORY}.*}
 PAGE=1
 
 while [ 0 ]
