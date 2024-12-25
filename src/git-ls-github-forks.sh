@@ -210,7 +210,7 @@ REPOSITORY=$(basename --suffix=".git" "$REPOSITORY_URL")
 OWNER=${REPOSITORY_URL#https://github.com/}
 OWNER=${OWNER%/${REPOSITORY}.*}
 
-DATA_URL="/repos/$OWNER/$REPOSITORY/forks?sort=$SORT_ORDER"
+DATA_URL="/repos/$OWNER/$REPOSITORY/forks"
 
 # We save output from GitHub into a temporary file for debugging
 # purposes.  The file will be in the system's temporary directory and
